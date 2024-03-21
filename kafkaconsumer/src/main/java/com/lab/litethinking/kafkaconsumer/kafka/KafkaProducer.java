@@ -21,6 +21,7 @@ public class KafkaProducer {
     }
 
     public void sendMessage(String message){
+        System.out.println("Se esta enviando un mensaje a la cola "+message);
         LOGGER.info(String.format("Message sent %s", message));
         kafkaTemplate.send(topicName, message);
     }
