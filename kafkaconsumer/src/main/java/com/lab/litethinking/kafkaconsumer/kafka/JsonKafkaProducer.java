@@ -2,6 +2,7 @@ package com.lab.litethinking.kafkaconsumer.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lab.litethinking.kafkaconsumer.dto.User;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,23 +29,26 @@ public class JsonKafkaProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendMessage(User user){
+    public void sendMessage(Object object){
 
-        LOGGER.info(String.format("Message sent -> %s", user.toString()));
+        LOGGER.info(String.format("Message sent -> %s", object.toString()));
         try {
-            byte[] bytes = convertUserToBytes(user);
-            Message<byte[]> message = MessageBuilder.withPayload(bytes).setHeader(KafkaHeaders.TOPIC, topicJsonName).build();
+            byte[] bytes = convertUserToBytes(object);
+            Message<byte[]> message = MessageBuilder.withPayload(bytes)
+                            .setHeader(KafkaHeaders.TOPIC, topicJsonName)
+                    .build();
             kafkaTemplate.send(message);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
-    private byte[] convertUserToBytes(User user) {
+    private byte[] convertUserToBytes(Object object) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutputStream oos = new ObjectOutputStream(bos)) {
-            oos.writeObject(user);
+            oos.writeObject(object);
             return bos.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
