@@ -2,7 +2,7 @@ package com.lab.litethinking.kafkaconsumer.dto;
 
 import java.io.Serializable;
 
-public class Product implements Serializable {
+public class Product implements Serializable{
 
     String name;
     int stock;

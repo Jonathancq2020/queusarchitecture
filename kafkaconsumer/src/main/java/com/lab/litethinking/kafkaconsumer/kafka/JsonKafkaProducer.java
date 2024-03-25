@@ -18,7 +18,7 @@ import java.io.ObjectOutputStream;
 @Service
 public class JsonKafkaProducer {
 
-    @Value("${spring.kafka.topic-json.name}")
+    @Value("${spring.kafka.example1.name}")
     private String topicJsonName;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonKafkaProducer.class);

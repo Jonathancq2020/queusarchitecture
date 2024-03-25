@@ -21,7 +21,7 @@ public class JsonKafkaConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonKafkaConsumer.class);
 
-    @KafkaListener(topics = "${spring.kafka.topic-json.name}", groupId = "${spring.kafka.consumer.group-id}")
+    @KafkaListener(topics = "${spring.kafka.example1.name}", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(@Payload byte[] data){
         try{
             Product product = (Product) convertBytesToObject(data);
@@ -31,12 +31,14 @@ public class JsonKafkaConsumer {
 
                 RestTemplate restTemplate=new RestTemplate();
 
-                String result = restTemplate.getForObject(apiUrl+"?message="+product.getName(),String.class);
+                System.out.println("URL: "+apiUrl+"?nombre="+product.getName());
+
+                String result = restTemplate.getForObject(apiUrl+"?nombre="+product.getName(),String.class);
 
                 LOGGER.info(String.format("Resultado del siguiente flujo =>: %s", result));
 
             }else{
-                LOGGER.info("Producto no tiene un stock para generar un reporte");
+                LOGGER.info("Producto no tiene un stock para generar la venta ");
             }
 
         }catch (IOException | ClassNotFoundException e) {

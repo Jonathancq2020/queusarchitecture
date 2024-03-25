@@ -38,10 +38,11 @@ public class MessageController {
 
     @GetMapping("/publish")
     public ResponseEntity<String> publish(@RequestParam("message") String message){
-        System.out.println("DATA 1.0 "+message);
+
         for (int i = 0; i < 10000; i++) {
-            kafkaProducer.sendMessage("Mensaje " + i + " => "+message);
+            kafkaProducer.sendMessage("Mensaje es: " + i + " => "+message);
         }
+
         return ResponseEntity.ok("Todos los mensajes fueron enviados correctamente");
     }
 
